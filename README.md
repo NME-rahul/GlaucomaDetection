@@ -1,16 +1,17 @@
 ### required modules:
-	* os
-	* sys
-	* numpy
-	* pathlib
-	* opencv-python
-	* matplotlib.pyplot
-	* tensorflow==1.13.2
-	* tensorflow-object-detection-api		
+	os
+	sys
+	numpy
+	pathlib
+	opencv-python
+	matplotlib.pyplot
+	tensorflow==1.13.2
+	tensorflow-object-detection-api		
 	
 
 * start from main.py
 	> python main.py <argument>
+	
 	**arguments:**
 	train_model - type if you wants to train model before model inference
 	       dflt - it loads existing model for model inference

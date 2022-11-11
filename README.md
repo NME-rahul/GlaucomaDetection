@@ -21,6 +21,9 @@
 * path for data images if you wants to retrain model: https://drive.google.com/drive/folders/1Y6mw98eAQLHaEiYNme97PbW5LNb0CXxm?usp=sharing
 
 ### Accuracy plot
+<img width="488" alt="Screenshot 2022-10-05 at 2 06 09 AM" src="https://user-images.githubusercontent.com/100432854/201436678-241b3fcb-e960-4116-9930-caf96304c17d.png">
+
+---
 
 ### Results of previously inference model:
-<img width="488" alt="Screenshot 2022-10-05 at 2 06 09 AM" src="https://user-images.githubusercontent.com/100432854/201436678-241b3fcb-e960-4116-9930-caf96304c17d.png">
+<img width="1312" alt="Screenshot 2022-11-06 at 3 27 45 PM" src="https://user-images.githubusercontent.com/100432854/201436836-0a60deee-0161-4eb3-9120-c61c76dc5c60.png">

@@ -9,7 +9,7 @@
 	tensorflow-object-detection-api		
 	
 
-* Start from main.py run
+* Start from main.py, run
 	> python main.py [arguments]
 		
 	  train_model - type if you wants to train model before model inference

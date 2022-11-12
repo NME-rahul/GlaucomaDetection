@@ -39,6 +39,7 @@ Glaucoma is one of the main cause of blindness and is irreversible. Caused by el
 ### Results of previously inference model:
 <img width="1312" alt="Screenshot 2022-11-06 at 3 27 45 PM" src="https://user-images.githubusercontent.com/100432854/201436836-0a60deee-0161-4eb3-9120-c61c76dc5c60.png">
 
+---
 
 * you can also do this by diretly running colab file: https://colab.research.google.com/drive/1owjTdPC7TvzdsDo2071omKNmHsSIO2oV
 * test data used in the prpgram: https://drive.google.com/drive/folders/1Y6mw98eAQLHaEiYNme97PbW5LNb0CXxm?usp=sharing

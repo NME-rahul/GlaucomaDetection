@@ -10,11 +10,13 @@
 	
 
 * Start from main.py, run
-	> python main.py [arguments]
-		
-	  train_model - type if you wants to train model before model inference
+
+	  python main.py [arguments]
+	  
+	arguments:	
+	> train_model - type if you wants to train model before model inference
 	
-	  dflt / None - it loads existing model for model inference
+	> dflt / None - it loads existing model for model inference
 
 * While giving path as input always give directory path without file name
 * While performing image processing always give path to the single image or path of directoy where you have two folder named as "Train" and "Validation"

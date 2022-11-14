@@ -49,4 +49,4 @@ def adaptive_hist_flattening(path):
     rgb = cv.cvtColor(hsv, cv.COLOR_HSV2BGR)
     cv.imwrite(path, rgb)
 
-  print('Image: ',path)
+  print('Image: ', path)

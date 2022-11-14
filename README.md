@@ -18,10 +18,12 @@ Glaucoma is one of the main cause of blindness and is irreversible. Caused by el
 
 	  python main.py [arguments]
 	  
-	arguments:	
-	> train_model - type if you wants to train model before model inference
+	arguments:
+	> train_model - type if you wants to train model before model inference.
 	
-	> dflt / None - it loads existing model for model inference
+	> existing - use after argument 'train_model' if you wants to use existing model to retrain.
+
+	> dflt / None - it loads existing model for model inference.
 
 * While giving path as input always give directory path without file name
 * While performing image processing always give path to the single image or path of directoy where you have two folder named as "Train" and "Validation"

@@ -1,6 +1,8 @@
+#user defined modules
 import plot
 import image_preprocess
 
+#pre-defined modules
 import os
 import sys
 import pathlib
@@ -10,34 +12,39 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Model
 from keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.applications.resnet50 import preprocess_input
+
+#available Errors types in this file
+Error4 = '\nError: wrong path'
+Error5 = '\nError: unable to load model'
 
 batch_size = 8
 img_height = 300
 img_width = 300
 
 def load_data():
-  path = input('Enter path for data: ')
+  path = input('Enter path for data for training: ')
 
   if os.path.exists(path):
     #Data RIMONE
-    global data_train, data_val
+    global data_train, data_val, image_count_train, image_count_val
     data_train = pathlib.Path(path+'/Train')
-    data_val = pathlib.Path(data_val+'/Validation')
+    data_val = pathlib.Path(path+'/Validation')
 
     #Data RIMONE
     image_count_train = len(list(data_train.glob('**/*.png')))
     image_count_val = len(list(data_val.glob('**/*.png')))
-    print(image_count_train, image_count_val)
-    num_samples = image_count_train + image_count_val
+    print("\ndata size - \nTrain: ",image_count_train, "\nValidation: ",image_count_val)
+    if image_count_train + image_count_val == 0:
+      sys.exit(Error4)
   else:
-    print('Error: wrong path')
+    print(Error4)
 
-  choose = input('Image preprocessing: ')
+  choose = input('\nImage preprocessing(y/n)?: ')
   choose = choose.lower()
   if choose == 'y' or choose == 'yes':
     image_preprocess.resize_(path)
     image_preprocess.adaptive_hist_flattening(path)
-
 
 
 #if you want to see sample images
@@ -46,6 +53,8 @@ def load_data():
 def create_data():
   global train_ds, val_ds
   
+  print('\nloaded Dataset - ')
+
   #training dataset
   train_ds = tf.keras.utils.image_dataset_from_directory(
         data_train,
@@ -89,6 +98,7 @@ def create_generator():
     zoom_range = 0.1
     )
 
+  print('\nData after generator - ')
   train_generator = train_dataGen.flow_from_directory(data_train,
                                                       target_size = (img_height, img_width),
                                                       batch_size = batch_size)
@@ -131,34 +141,30 @@ def create_model_ResNet50():
   )
   return model
 
-def train():
-  create_data()
-  create_generator()
-  
+def load_existing_model():
   #if you wants to retrain existed trained model
   if os.path.exists('GlaucomaDetection.h5') == True:
-    choose = input('\nwants to exsiting retrain model(y/n): ')
-    choose = choose.lower()
-    if choose == 'y' or choose == 'yes':
-      try:
-        model = tf.keras.models.load_model('GlaucomaDetection.h5')
-      except:
-        print('\nError: unable to load model')
-    
-    else:
-      model = create_model_ResNet50()
-     
-  elif os.path.exists('GlaucomaDetection.h5') == False:
-    return False
-  
+    try:
+      model = tf.keras.models.load_model('GlaucomaDetection.h5')
+    except:
+      print()
   else:
-    model = create_model_ResNet50()
-    
+    model = False
+
   return model
     
+def compile_model(model):
+  adam = tf.keras.optimizers.Adam(learning_rate=0.00001)
+  model.compile(
+      adam,
+      loss = 'binary_crossentropy',
+      metrics = ['accuracy']
+    )
+
+  return model
 
 def fit_model(model):
-  epochs = int(input('Enter epoches: '))
+  epochs = int(input('\nEnter epoches: '))
   validation_steps = 10
   history = model.fit(
       train_generator,
@@ -170,5 +176,5 @@ def fit_model(model):
     )
   
   #will plot accuracy of trained model
-  plot.plot_accuracy(history)
+  plot.plot_accuracy(history, epochs)
 

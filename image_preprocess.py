@@ -6,19 +6,21 @@ dflt_img_height = 300
 dflt_img_width = 300
 
 #aalways give path to the directory of train and validation
-def fetch_path(path):
-  data_path = os.listdir(path)
-  for i in range(len(data_path)):
-    data = os.listdir(folder_path + data_path[i])
-    for j in range(len(data)):
-      Glaucoma_data = os.listdir( folder_path + data_path[i] + '/' + data[j] + '/')
-      for k in range(len(Glaucoma_data)):
-        img_path = folder_path + data_path[i] + '/' + data[j] + '/' + Glaucoma_data[k]
+def fetch_path(folder_path):
+  data_path = os.listdir(folder_path)
+  for i in data_path:
+    print(i)
+    data = os.listdir(folder_path + '/' + i)
+    for j in data:
+      Glaucoma_data = os.listdir( folder_path + '/' + i + '/' + j + '/')
+      for k in Glaucoma_data:
+        img_path = folder_path + '/' + i + '/' + j + '/' + k
         resize_(img_path)
         adaptive_hist_flattening(img_path)
 
-#function wich gets the image path from main.py and resize it according model requirments
-def resize_(Path):
+#function which gets the image path from main.py and resize it according model requirments
+def resize_(path):
+
   if os.path.isdir(path) == True:
     fetch_path(path)
   
@@ -45,6 +47,6 @@ def adaptive_hist_flattening(path):
     #postprocessing
     hsv = cv.merge((h, s, result))
     rgb = cv.cvtColor(hsv, cv.COLOR_HSV2BGR)
-    cv.imwrite(img_path, rgb)
+    cv.imwrite(path, rgb)
 
-  print('Image: ',img_path)
+  print('Image: ',path)

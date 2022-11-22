@@ -22,7 +22,7 @@ batch_size = 8
 img_height = 300
 img_width = 300
 
-def load_data():
+def load_data(): #load data for model
   path = input('Enter path for data for training: ')
 
   if os.path.exists(path):
@@ -50,8 +50,8 @@ def load_data():
 #if you want to see sample images
 #plot.plot_samples() #defined in plot.py
 
-def create_data():
-  global train_ds, val_ds
+def create_data(): #prepare data for model
+  global train_ds, val_ds #make the the vaiables global so that function create_generator can use these
   
   print('\nloaded Dataset - ')
 
@@ -75,8 +75,8 @@ def create_data():
         batch_size = batch_size
       )
 
-def create_generator():
-  global train_generator, val_generator
+def create_generator(): #perform data augmentation
+  global train_generator, val_generator #make the the vaiables global so that function create model and fit_model can use these
     
   train_dataGen = ImageDataGenerator(
     preprocessing_function = preprocess_input,
@@ -107,13 +107,13 @@ def create_generator():
                                                   target_size = (img_height, img_width),
                                                   batch_size = batch_size)
 
-def create_model_ResNet50():
-  #ResNet50 model
+def create_model_ResNet50(): #create the model Resnet50
+  print('\nCreating model ResNe50...')
   dropout = 0.5
   num_classes = 2
   fc_layers = [1024, 512, 256]
 
-  def build_model(base_model, dropout, fc_layers, num_classes):
+  def build_model(base_model, dropout, fc_layers, num_classes): #this function adds fully connected and a dense layer on pretrained model
     for layer in base_model.layers:
       layer.trainable = False
 
@@ -124,36 +124,38 @@ def create_model_ResNet50():
         x = layers.Dropout(dropout)(x)
     preditions = layers.Dense(num_classes, activation='softmax')(x)
     finetune_model = Model(inputs = base_model.input, outputs = preditions)
-    return finetune_model
+    return finetune_model #return model to the build model function
 
-
-  base_model_1 = tf.keras.applications.resnet50.ResNet50(
+  base_model_1 = tf.keras.applications.resnet50.ResNet50( #build the new model on pretrained model
     weights = 'imagenet',
-    include_top = False,
+    include_top = False, #include flatten layer on top
     input_shape = (img_height, img_width, 3)
   )
-
-  model = build_model(
+  
+  model = build_model( #build model
     base_model_1,
     dropout = dropout,
     fc_layers = fc_layers,
     num_classes = num_classes
   )
-  return model
+  print('Done model Creation.')
+  return model #return newly created model
 
-def load_existing_model():
+def load_existing_model(): #load existing model
   #if you wants to retrain existed trained model
-  if os.path.exists('GlaucomaDetection.h5') == True:
+  print('\nLoading model...\n')
+  if os.path.exists('GlaucomaDetection.h5') == True: #if exists
     try:
       model = tf.keras.models.load_model('GlaucomaDetection.h5')
+      print('\nDone loading.')
     except:
-      print()
-  else:
+      print(Error5)
+  else: #otherwise return false
     model = False
 
   return model
     
-def compile_model(model):
+def compile_model(model): #compile the model
   adam = tf.keras.optimizers.Adam(learning_rate=0.00001)
   model.compile(
       adam,
@@ -163,7 +165,7 @@ def compile_model(model):
 
   return model
 
-def fit_model(model):
+def fit_model(model): #fit the model on data
   epochs = int(input('\nEnter epoches: '))
   validation_steps = 10
   history = model.fit(
@@ -175,6 +177,4 @@ def fit_model(model):
       shuffle = True
     )
   
-  #will plot accuracy of trained model
-  plot.plot_accuracy(history, epochs)
-
+  plot.plot_accuracy(history, epochs) #will plot accuracy of trained model

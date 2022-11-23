@@ -23,7 +23,7 @@ Glaucoma is one of the main cause of blindness and is irreversible. Caused by el
 	
 	> existing - use after argument 'train_model' if you wants to use existing model to retrain.
 
-	> dflt / None - it loads existing model for model inference.
+	> make_predictions / None - it loads existing model for model inference.
 
 * While giving path as input always give directory path without file name
 * While performing image processing always give path to the single image or path of directoy where you have two folder named as "Train" and "Validation"
@@ -41,3 +41,21 @@ Glaucoma is one of the main cause of blindness and is irreversible. Caused by el
 
 * you can also do this by diretly running colab file: https://colab.research.google.com/drive/1owjTdPC7TvzdsDo2071omKNmHsSIO2oV
 * test data used in the prpgram: https://drive.google.com/drive/folders/1Y6mw98eAQLHaEiYNme97PbW5LNb0CXxm?usp=sharing
+
+<details>
+
+* Clone the repositoy in brainypi.
+* Change directory to Glaucoma Detection(remove space from directory name if any).
+* Run following commands in brainypi(before this you must have docker installed).
+
+		docker build -f dockerfile -t proj:GlaucomaDetection ~/GlaucomaDetection/
+
+		docker run -ti {projectName|projID}
+
+* The container will run in interactive mode, perfrom actions as given in menu(appears after running container), initialy the container doesn't have any model so start by training model or add the model from the link given in 1.
+
+> project file size: 3.23 GB <br>
+> project file size with added model: 3.23 + 2.65 GB
+
+<summary>Click to view implemetation steps in brainypi</summary>
+</details>

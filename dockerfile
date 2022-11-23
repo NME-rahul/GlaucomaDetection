@@ -30,4 +30,4 @@ ADD plot.py .
 ADD train_model.py .
 ADD image_preprocess.py .
 
-CMD ["python3", "./main.py"]
+CMD ["python3", "./main.py", "train_model"]

@@ -21,6 +21,7 @@ RUN pip3 install opencv-python
 RUN pip3 install tensorflow
 RUN pip3 install matplotlib
 RUN pip3 install numpy
+RUN pip3 install scipy
 
 ENV PYTHONIOENCODING=utf8 
 RUN echo "$FOO $BAR $PYTHONIOENCODING"

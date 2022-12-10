@@ -21,7 +21,7 @@ Error3 = '\nError: unable to fetch images'
 def start_predictions(model):
   path = input('\nEnter path of image/s: ')
   if os.path.isdir(path) == True:
-    path = glob.glob(path + '/**/*.png', recursive=True) #fetching images(only .png) from directory
+    path = glob.glob(path + '/**/*.png', recursive=True)
     for image_path in path:
       image_instance = image_preprocess.resize_(image_path) #resize_ function is defined in image_resize.py
       try:
@@ -42,9 +42,10 @@ def start_predictions(model):
   plot.plot_predictions(predictions) #plot_ function is defined in plot.py
 
 def start():
-  if len(sys.argv) > 3:
+  length = len(sys.argv)
+  if length > 3:
     sys.exit("\nError: main.py except only 1 argument 'train_model'")
-  elif len(sys.argv) == 2 and sys.argv[1] == 'train_model':
+  elif (length == 2 and sys.argv[1] == 'train_model') or length > 2:
     tm.load_data()
     tm.create_data()
     tm.create_generator()
@@ -61,7 +62,7 @@ def start():
       model.save('GlaucomaDetection.h5')
     return model
 
-  elif len(sys.argv) == 1 or sys.argv[1] == 'make_predictions':
+  elif length == 1 or sys.argv[1] == 'make_predictions':
     model = tm.load_existing_model()
     if model == False:
       sys.exit(Error1)

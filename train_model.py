@@ -16,7 +16,7 @@ from tensorflow.keras.applications.resnet50 import preprocess_input
 
 #available Errors types in this file
 Error4 = '\nError: wrong path'
-Error5 = '\nError: unable to load model'
+Error5 = '\nError: unable to load model, model not found cuurent working directory or given path try with new path'
 
 batch_size = 8
 img_height = 300
@@ -108,7 +108,7 @@ def create_generator(): #perform data augmentation
                                                   batch_size = batch_size)
 
 def create_model_ResNet50(): #create the model Resnet50
-  print('\nCreating model ResNe50...')
+  print('\nCreating model ResNet50...')
   dropout = 0.5
   num_classes = 2
   fc_layers = [1024, 512, 256]
@@ -143,16 +143,23 @@ def create_model_ResNet50(): #create the model Resnet50
 
 def load_existing_model(): #load existing model
   #if you wants to retrain existed trained model
-  print('\nLoading model...\n')
-  if os.path.exists('GlaucomaDetection.h5') == True: #if exists
+  def fun(path):
+    model = False #initially
     try:
-      model = tf.keras.models.load_model('GlaucomaDetection.h5')
+      model = tf.keras.models.load_model(path)
       print('\nDone loading.')
     except:
       print(Error5)
-  else: #otherwise return false
-    model = False
-
+    return model
+      
+  print('\nLoading model...\n')
+  path = 'GlaucomaDetection.h5' 
+  while True:
+    model = fun(path)
+    if model == False:
+      path = input('\nEnter another path: ')
+    else:
+      break
   return model
     
 def compile_model(model): #compile the model

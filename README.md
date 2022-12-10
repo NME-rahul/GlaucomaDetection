@@ -19,7 +19,15 @@ Glaucoma is one of the main cause of blindness and is irreversible. Caused by el
 	tensorflow-object-detection-api		
 	
 
-* Start from main.py, run
+* Start from installing miniconda(recomended).
+	
+* run miniconda terminal and create conda environment.
+	
+	  conda create --name tf python=3.10
+	  
+* install required modules.
+	
+* run command,
 
 	  python main.py [arguments]
 	  
@@ -29,6 +37,12 @@ Glaucoma is one of the main cause of blindness and is irreversible. Caused by el
 	> existing - use after argument 'train_model' if you wants to use existing model to retrain.
 
 	> make_predictions / None - it loads existing model for model inference.
+	
+<br><br>
+**Note-** this will not work in macos due to errors occuring while installing tensorflow module whenever this error resolve this might works.
+
+---
+
 
 * While giving path as input always give directory path without file name
 * While performing image processing always give path to the single image or path of directoy where you have two folder named as "Train" and "Validation"

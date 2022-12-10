@@ -23,7 +23,7 @@ img_height = 300
 img_width = 300
 
 def load_data(): #load data for model
-  path = input('Enter path for data for training: ')
+  path = input('Enter path of data for training: ')
 
   if os.path.exists(path):
     #Data RIMONE
@@ -152,7 +152,7 @@ def load_existing_model(): #load existing model
       print(Error5)
     return model
       
-  print('\nLoading model...\n')
+  print('\nLoading model...')
   path = 'GlaucomaDetection.h5' 
   while True:
     model = fun(path)

@@ -38,6 +38,8 @@ Glaucoma is one of the main cause of blindness and is irreversible. Caused by el
 
 	> make_predictions / None - it loads existing model for model inference.
 	
+<br>
+<a href="https://youtu.be/hpKa6J_U2fw">Demo Video</a>
 <br><br>
 **Note-** this will not work in macos due to errors occuring while installing tensorflow module whenever this error resolve this might works.
 

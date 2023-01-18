@@ -24,8 +24,16 @@ Glaucoma is one of the main cause of blindness and is irreversible. Caused by el
 * run miniconda terminal and create conda environment.
 	
 	  conda create --name tf python=3.10
+
+* Clone the directory and change in it.
 	  
-* install required modules.
+	  git clone https://github.com/NME-rahul/GlaucomaDetection.git
+	  
+	  cd GlaucomaDetection
+	  
+* install required modules, run.
+
+	  pip install -r requirments.txt
 	
 * run command,
 

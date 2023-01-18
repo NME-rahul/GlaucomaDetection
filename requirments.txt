@@ -1,0 +1,6 @@
+numpy
+pathlib
+opencv-python
+matplotlib
+tensorflow
+tensorflow-object-detection-api		

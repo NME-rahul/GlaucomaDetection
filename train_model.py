@@ -74,7 +74,8 @@ def create_data(): #prepare data for model
         image_size = (img_height, img_width),
         batch_size = batch_size
       )
-
+  print('\nClasses: ', train_ds.class_names)
+  
 def create_generator(): #perform data augmentation
   global train_generator, val_generator #make the the vaiables global so that function create model and fit_model can use these
     

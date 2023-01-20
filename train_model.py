@@ -27,15 +27,13 @@ def load_data(): #load data for model
 
   if os.path.exists(path):
     #Data RIMONE
-    global data_train, data_val, image_count_train, image_count_val
-    data_train = pathlib.Path(path+'/Train')
-    data_val = pathlib.Path(path+'/Validation')
+    global dataDir, image_count
+    dataDir = pathlib.Path(path)
 
     #Data RIMONE
-    image_count_train = len(list(data_train.glob('**/*.png')))
-    image_count_val = len(list(data_val.glob('**/*.png')))
-    print("\ndata size - \nTrain: ",image_count_train, "\nValidation: ",image_count_val)
-    if image_count_train + image_count_val == 0:
+    image_count = len(list(dataDir.glob('**/*.png')))
+    print("\ndata size: ",image_count)
+    if image_count == 0:
       sys.exit(Error4)
   else:
     print(Error4)
@@ -57,7 +55,7 @@ def create_data(): #prepare data for model
 
   #training dataset
   train_ds = tf.keras.utils.image_dataset_from_directory(
-        data_train,
+        dataDir,
         validation_split = 0.2,
         subset = 'training',
         seed = 123,
@@ -67,7 +65,7 @@ def create_data(): #prepare data for model
 
   #validation dataset
   val_ds = tf.keras.utils.image_dataset_from_directory(
-        data_val,
+        dataDir,
         validation_split = 0.2,
         subset = 'validation',
         seed = 123,
@@ -75,7 +73,7 @@ def create_data(): #prepare data for model
         batch_size = batch_size
       )
   print('\nClasses: ', train_ds.class_names)
-  
+
 def create_generator(): #perform data augmentation
   global train_generator, val_generator #make the the vaiables global so that function create model and fit_model can use these
     
@@ -100,11 +98,11 @@ def create_generator(): #perform data augmentation
     )
 
   print('\nData after generator - ')
-  train_generator = train_dataGen.flow_from_directory(data_train,
+  train_generator = train_dataGen.flow_from_directory(dataDir,
                                                       target_size = (img_height, img_width),
                                                       batch_size = batch_size)
 
-  val_generator = test_dataGen.flow_from_directory(data_val,
+  val_generator = test_dataGen.flow_from_directory(dataDir,
                                                   target_size = (img_height, img_width),
                                                   batch_size = batch_size)
 
@@ -181,7 +179,7 @@ def fit_model(model): #fit the model on data
       epochs = epochs,
       steps_per_epoch = len(train_generator),
       validation_data = val_generator,
-      validation_steps = image_count_val//batch_size,
+      validation_steps = image_count//batch_size,
       shuffle = True
     )
   

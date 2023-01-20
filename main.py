@@ -26,8 +26,8 @@ def start_predictions(model):
       image_instance = image_preprocess.resize_(image_path) #resize_ function is defined in image_resize.py
       try:
         predictions = model.predict(image_instance)
-        print(predictions,'\n')
-        #print('GlaucomaNegative: %f \t\t GlaucomaPositive: %f'%(predictions[0][0]*100, predictions[0][1]*100))
+        score = tf.nn.softmax(predictions[0])
+        print("This image most likely belongs to {} with a {:.2f} percent confidence.\n".format(class_names[np.argmax(score)], 100 * np.max(score)))
         #predictions.append(predictions)
       except:
         print(Error3)
@@ -36,6 +36,8 @@ def start_predictions(model):
     image_instance = image_preprocess.resize_(path)
     try:
       predictions = model.predict(image_instance)
+      score = tf.nn.softmax(predictions[0])
+      print("\nThis image most likely belongs to {} with a {:.2f} percent confidence.".format(class_names[np.argmax(score)], 100 * np.max(score)))
     except:
       print(Error2)
 
@@ -68,6 +70,8 @@ def start():
       sys.exit(Error1)
     return model
 
+class_names = ['Glaucoma_Negative', 'Glaucoma_Positive']
 model = start()
 if input("\npress 'P' for making predictions: ") == 'P':
-  start_predictions(model)
+  while True:
+    start_predictions(model)

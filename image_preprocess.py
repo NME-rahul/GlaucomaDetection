@@ -5,18 +5,15 @@ import os
 dflt_img_height = 300
 dflt_img_width = 300
 
-#aalways give path to the directory of train and validation
 def fetch_path(folder_path):
   data_path = os.listdir(folder_path)
   for i in data_path:
     print(i)
     data = os.listdir(folder_path + '/' + i)
     for j in data:
-      Glaucoma_data = os.listdir( folder_path + '/' + i + '/' + j)
-      for k in Glaucoma_data:
-        img_path = folder_path + '/' + i + '/' + j + '/' + k
-        resize_(img_path)
-        adaptive_hist_flattening(img_path)
+      image_path = os.listdir( folder_path + '/' + i + '/' + j)
+      resize_(img_path)
+      adaptive_hist_flattening(img_path)
 
 #function which gets the image path from main.py and resize it according model requirments
 def resize_(path):

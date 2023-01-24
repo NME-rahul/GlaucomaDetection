@@ -1,6 +1,7 @@
+glob
 numpy
 pathlib
 opencv-python
 matplotlib
 tensorflow
-tensorflow-object-detection-api		
+tensorflow-object-detection-api

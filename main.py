@@ -1,52 +1,20 @@
 #user defined modules
 import plot
+import prediction
 import train_model as tm
-import image_preprocess
+import image_preprocess as ip
 
 #pre-defined modules
-import os
 import sys
-import glob
-import numpy as np
-import tensorflow as tf
-from tensorflow import keras
-from tensorflow.keras.models import Model
-from tensorflow.keras.applications.resnet50 import decode_predictions
 
 #available Error types in this file
 Error1 = '\nError: model not found make sure the model is present inside the current working directory'
-Error2 = '\nError: Courrupt image or size is not 300x300x3'
-Error3 = '\nError: unable to fetch images'
-
-def start_predictions(model):
-  path = input('\nEnter path of image/s: ')
-  if os.path.isdir(path) == True:
-    path = glob.glob(path + '/**/*.png', recursive=True)
-    for image_path in path:
-      image_instance = image_preprocess.resize_(image_path) #resize_ function is defined in image_resize.py
-      try:
-        predictions = model.predict(image_instance)
-        score = tf.nn.softmax(predictions[0])
-        print("This image most likely belongs to {} with a {:.2f} percent confidence.\n".format(class_names[np.argmax(score)], 100 * np.max(score)))
-        #predictions.append(predictions)
-      except:
-        print(Error3)
-        
-  else:
-    image_instance = image_preprocess.resize_(path)
-    try:
-      predictions = model.predict(image_instance)
-      score = tf.nn.softmax(predictions[0])
-      print("\nThis image most likely belongs to {} with a {:.2f} percent confidence.".format(class_names[np.argmax(score)], 100 * np.max(score)))
-    except:
-      print(Error2)
-
-  plot.plot_predictions(predictions) #plot_ function is defined in plot.py
+Error2 = "\nError: maximum argument limit exceeds."
 
 def start():
   length = len(sys.argv)
   if length > 3:
-    sys.exit("\nError: main.py except only 1 argument 'train_model'")
+    sys.exit(Error2)
   elif (length == 2 and sys.argv[1] == 'train_model') or length > 2:
     tm.load_data()
     tm.create_data()
@@ -61,17 +29,17 @@ def start():
       sys.exit(Error1)
     else:
       tm.fit_model(model)
-      model.save('GlaucomaDetection.h5')
+      tm.show_accuracy(model)
     return model
 
   elif length == 1 or sys.argv[1] == 'make_predictions':
     model = tm.load_existing_model()
+    tm.show_accuracy(model)
     if model == False:
       sys.exit(Error1)
     return model
 
-class_names = ['Glaucoma_Negative', 'Glaucoma_Positive']
 model = start()
 if input("\npress 'P' for making predictions: ") == 'P':
   while True:
-    start_predictions(model)
+    prediction.start_predictions(model)

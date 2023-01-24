@@ -1,12 +1,11 @@
 #user defined modules
 import plot
-import image_preprocess
+import image_preprocess as ip
 
 #pre-defined modules
 import os
 import sys
 import pathlib
-import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -41,8 +40,8 @@ def load_data(): #load data for model
   choose = input('\nImage preprocessing(y/n)?: ')
   choose = choose.lower()
   if choose == 'y' or choose == 'yes':
-    image_preprocess.resize_(path)
-    image_preprocess.adaptive_hist_flattening(path)
+    ip.resize_(path)
+    ip.adaptive_hist_flattening(path)
 
 
 #if you want to see sample images
@@ -184,3 +183,12 @@ def fit_model(model): #fit the model on data
     )
   
   plot.plot_accuracy(history, epochs) #will plot accuracy of trained model
+
+def show_accuracy(model):
+  model.save('GlaucomaDetection.h5') #save the trained model
+  #evaluate the model
+  print('\n\nAccuracy achieved:')
+  test_results = model.evaluate(train_generator, steps=len(train_generator))
+  val_results = model.evaluate(val_generator, steps=len(val_generator))
+  print('training loss: %f, training acc: %f' %(test_results[0], test_results[1]))
+  print('validation loss: %f, validation acc: %f' %(val_results[0], val_results[1]))

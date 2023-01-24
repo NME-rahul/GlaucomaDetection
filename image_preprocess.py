@@ -1,40 +1,32 @@
 import cv2 as cv
-import numpy as np
+import glob
 import os
 
 dflt_img_height = 300
 dflt_img_width = 300
 
-def fetch_path(folder_path):
-  data_path = os.listdir(folder_path)
-  for i in data_path:
-    print(i)
-    data = os.listdir(folder_path + '/' + i)
-    for j in data:
-      image_path = os.listdir( folder_path + '/' + i + '/' + j)
-      resize_(img_path)
-      adaptive_hist_flattening(img_path)
+Error3 = '\nError: unable to fetch images or Courrupt image or size is not 300x300x3'
 
 #function which gets the image path from main.py and resize it according model requirments
 def resize_(path):
-
-  if os.path.isdir(path) == True:
-    fetch_path(path)
-  
-  if os.path.exists(path) == True:
-    img = cv.imread(path)
+  img = cv.imread(path)
+  try:
     image_instance = cv.resize(img, (dflt_img_height, dflt_img_width))
-    image_instance = np.expand_dims(image_instance, 0)
-    
-  print('Image: ', path)
+    print('Image: ', path)
+  except:
+    print(Error3)
+    image_instance = False
+
   return image_instance
 
 
 def adaptive_hist_flattening(path):
   if os.path.isdir(path) == True:
-    fetch_path(path)
-
-  if os.path.exists(path) == True:       
+    image_path = glob.glob(path + '/**/*.png', recursive=True)
+    for i in image_path:
+      adaptive_hist_flattening(i)
+  
+  try:
     img = cv.imread(path)
     hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
     h,s,v = cv.split(hsv)
@@ -45,5 +37,7 @@ def adaptive_hist_flattening(path):
     hsv = cv.merge((h, s, result))
     rgb = cv.cvtColor(hsv, cv.COLOR_HSV2BGR)
     cv.imwrite(path, rgb)
-
+  except:
+    print(Error3)
+    pass
   print('Image: ',path)

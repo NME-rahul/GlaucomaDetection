@@ -55,6 +55,8 @@ def plot_accuracy(history, epochs): #this function will plot the aacuracy of mod
   plt.legend() #put the label on graph
   plt.title('Training and Validation loss') #put the title on graph
   
+  fig = plt.gcf() #get current figure
+  fig.savefig('accuracyPlot.pdf') #will save the figure
   plt.show() #show the figure
     
 def plot_samples():

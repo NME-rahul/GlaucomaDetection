@@ -34,7 +34,7 @@ def start():
 
   elif length == 1 or sys.argv[1] == 'make_predictions':
     model = tm.load_existing_model()
-    tm.show_accuracy(model)
+    #tm.show_accuracy(model)
     if model == False:
       sys.exit(Error1)
     return model

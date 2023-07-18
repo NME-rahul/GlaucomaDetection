@@ -5,6 +5,7 @@ import image_preprocess as ip
 #pre-defined modules
 import os
 import sys
+import glob
 import pathlib
 import tensorflow as tf
 from tensorflow import keras
@@ -24,7 +25,7 @@ image_cnt_train = 0
 image_cnt_val = 0
 
 def load_data(): #load data for model
-  train_dir = input('Enter path of train images: ')
+  train_dir = input('Enter path of train images: ') 
   val_dir = input('Enter path of val images: ')
 
   if os.path.exists(train_dir) and os.path.exists(val_dir):
@@ -42,8 +43,8 @@ def load_data(): #load data for model
   choose = input('\nImage preprocessing(y/n)?: ')
   choose = choose.lower()
   if choose == 'y' or choose == 'yes':
-    ip.resize_(path)
-    ip.adaptive_hist_flattening(path)
+    image_path = list(train_dir.glob('**/*')) + list(val_dir.glob('**/*'))
+    ip.adaptive_hist_flattening( image_path )
 
   return [train_dir, val_dir]
 
@@ -98,7 +99,7 @@ def create_generator(train_dir, val_dir): #perform data augmentation
                                                   batch_size = batch_size)
   return [train_gen, val_gen]
 
-def create_model_EfficientNet(): #create the model Resnet50
+def create_model_ResNet50(): #create the model Resnet50
   print('\nCreating model EfficientNet...')
   dropout = 0.0
   num_classes = 2
@@ -155,33 +156,27 @@ def load_existing_model(): #load existing model
   return model
     
 def compile_model(model): #compile the model
-  adam = tf.keras.optimizers.Adam(learning_rate=0.00001)
+  adam = tf.keras.optimizers.Adam(learning_rate=0.001)
   model.compile(
       adam,
-      loss = 'binary_crossentropy',
+      loss = tf.keras.losses.BinaryCrossentropy(),
       metrics = ['accuracy']
     )
-
   return model
 
 def fit_model(model, train_gen, val_gen): #fit the model on data
   epochs = int(input('\nEnter epoches: '))
-  validation_steps = 10
   history = model.fit(
       train_gen,
       epochs = epochs,
-      steps_per_epoch = len(train_gen),
       validation_data = val_gen,
-      validation_steps = image_cnt_val//batch_size,
-      shuffle = True
     )
-  plot.plot_accuracy(history, epochs) #will plot accuracy of trained model
-
-def show_accuracy(model):
+  
   model.save('GlaucomaDetection.h5') #save the trained model
   #evaluate the model
   print('\n\nAccuracy achieved:')
-  test_results = model.evaluate(train_generator, steps=len(train_generator))
-  val_results = model.evaluate(val_generator, steps=len(val_generator))
+  test_results = model.evaluate(train_gen, steps=len(train_gen))
+  val_results = model.evaluate(val_gen, steps=len(val_gen))
   print('training loss: %f, training acc: %f' %(test_results[0], test_results[1]))
   print('validation loss: %f, validation acc: %f' %(val_results[0], val_results[1]))
+  plot.plot_accuracy(history, epochs) #will plot accuracy of trained model

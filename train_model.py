@@ -107,30 +107,32 @@ def create_generator(): #perform data augmentation
 
 def create_model_ResNet50(): #create the model Resnet50
   print('\nCreating model ResNet50...')
-  dropout = 0.5
+  dropout = 0.0
   num_classes = 2
-  fc_layers = [1024, 512, 256]
+  fc_layers = [512, 256, 128]
 
-  def build_model(base_model, dropout, fc_layers, num_classes): #this function adds fully connected and a dense layer on pretrained model
+  def build_model(base_model, dropout, fc_layers, num_classes):
     for layer in base_model.layers:
-      layer.trainable = False
+        layer.trainable = False
 
     x = base_model.output
+    x = layers.GlobalAveragePooling2D()(x)
     x = layers.Flatten()(x)
     for fc in fc_layers:
         x = layers.Dense(fc, activation='relu')(x)
-        x = layers.Dropout(dropout)(x)
+        #x = layers.Dropout(dropout)(x)
     preditions = layers.Dense(num_classes, activation='softmax')(x)
     finetune_model = Model(inputs = base_model.input, outputs = preditions)
-    return finetune_model #return model to the build model function
+    return finetune_model
 
-  base_model_1 = tf.keras.applications.resnet50.ResNet50( #build the new model on pretrained model
+
+  base_model_1 = tf.keras.applications.efficientnet_v2.EfficientNetV2L(
     weights = 'imagenet',
-    include_top = False, #include flatten layer on top
+    include_top = False,
     input_shape = (img_height, img_width, 3)
   )
-  
-  model = build_model( #build model
+
+  model = build_model(
     base_model_1,
     dropout = dropout,
     fc_layers = fc_layers,

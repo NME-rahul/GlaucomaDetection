@@ -22,7 +22,7 @@ def start():
     if len(sys.argv) == 3 and sys.argv[2] == 'existing':
       model = tm.load_existing_model()
     else:
-      model = tm.create_model_ResNet50()
+      model = tm.create_model_EfficientNet()
       model = tm.compile_model(model)
 
     if model == False:

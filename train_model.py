@@ -98,7 +98,7 @@ def create_generator(train_dir, val_dir): #perform data augmentation
                                                   batch_size = batch_size)
   return [train_gen, val_gen]
 
-def create_model_ResNet50(): #create the model Resnet50
+def create_model_EfficientNet(): #create the model Resnet50
   print('\nCreating model EfficientNet...')
   dropout = 0.0
   num_classes = 2

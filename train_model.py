@@ -27,17 +27,17 @@ def load_data(): #load data for model
   train_dir = input('Enter path of train images: ')
   val_dir = input('Enter path of val images: ')
 
-  if os.path.exists(neg_dir) and os.path.exists(pos_dir):
+  if os.path.exists(train_dir) and os.path.exists(val_dir):
     train_dir = pathlib.Path(train_dir)
     val_dir = pathlib.Path(val_dir)
 
     image_cnt_train = len(list(train_dir.glob('**/*')))
     image_cnt_val = len(list(val_dir.glob('**/*')))
-    print("\ndata size: \n train Images: %d \n validation Images: %d" %(image_cnt_train, image_cnt_val))
+    print("\ndata size: \ntrain Images: %d \nvalidation Images: %d" %(image_cnt_train, image_cnt_val))
     if image_cnt_train == 0 or image_cnt_val == 0:
       sys.exit(Error4)
   else:
-    print(Error4)
+    sys.exit(Error4)
 
   choose = input('\nImage preprocessing(y/n)?: ')
   choose = choose.lower()
@@ -51,9 +51,7 @@ def load_data(): #load data for model
 #if you want to see sample images
 #plot.plot_samples() #defined in plot.py
 
-def create_data(): #prepare data for model
-  global train_ds, val_ds #make the the vaiables global so that function create_generator can use these
-  
+def create_data(): #prepare data for model  
   print('\nloaded Dataset - ')
 
   #training dataset
@@ -77,7 +75,7 @@ def create_data(): #prepare data for model
       )
   print('\nClasses: ', train_ds.class_names)
 
-def create_generator(neg_dir, pos_dir): #perform data augmentation    
+def create_generator(train_dir, val_dir): #perform data augmentation    
   train_dataGen = ImageDataGenerator(
     rotation_range = 30,
     horizontal_flip = True,
@@ -90,18 +88,18 @@ def create_generator(neg_dir, pos_dir): #perform data augmentation
     vertical_flip = True,
     )
 
-  print('\nData after generator - ')
-  train_gen = train_dataGen.flow_from_directory(neg_dir,
+  print('\nData generator - ')
+  train_gen = train_dataGen.flow_from_directory(train_dir,
                                                       target_size = (img_height, img_width),
                                                       batch_size = batch_size)
 
-  val_gen = test_dataGen.flow_from_directory(dataDir,
+  val_gen = test_dataGen.flow_from_directory(val_dir,
                                                   target_size = (img_height, img_width),
                                                   batch_size = batch_size)
   return [train_gen, val_gen]
 
 def create_model_ResNet50(): #create the model Resnet50
-  print('\nCreating model ResNet50...')
+  print('\nCreating model EfficientNet...')
   dropout = 0.0
   num_classes = 2
   fc_layers = [512, 256, 128]

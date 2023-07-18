@@ -118,7 +118,6 @@ def create_model_ResNet50(): #create the model Resnet50
     finetune_model = Model(inputs = base_model.input, outputs = preditions)
     return finetune_model
 
-
   base_model_1 = tf.keras.applications.efficientnet_v2.EfficientNetV2L(
     weights = 'imagenet',
     include_top = False,
@@ -176,7 +175,6 @@ def fit_model(model, train_gen, val_gen): #fit the model on data
       validation_steps = image_cnt_val//batch_size,
       shuffle = True
     )
-  
   plot.plot_accuracy(history, epochs) #will plot accuracy of trained model
 
 def show_accuracy(model):

@@ -16,9 +16,9 @@ def start():
   if length > 3:
     sys.exit(Error2)
   elif (length == 2 and sys.argv[1] == 'train_model') or length > 2:
-    tm.load_data()
-    tm.create_data()
-    tm.create_generator()
+    train_dir, val_dir = tm.load_data()
+    #train_dir, val_dir = tm.create_data(train_dir, val_dir)
+    train_dir, val_dir = tm.create_generator(train_dir, val_dir)
     if len(sys.argv) == 3 and sys.argv[2] == 'existing':
       model = tm.load_existing_model()
     else:
@@ -28,7 +28,7 @@ def start():
     if model == False:
       sys.exit(Error1)
     else:
-      tm.fit_model(model)
+      tm.fit_model(model, train_dir, val_dir)
       tm.show_accuracy(model)
     return model
 

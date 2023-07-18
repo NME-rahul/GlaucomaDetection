@@ -25,11 +25,9 @@ def load_data(): #load data for model
   path = input('Enter path of data for training: ')
 
   if os.path.exists(path):
-    #Data RIMONE
     global dataDir, image_count
     dataDir = pathlib.Path(path)
 
-    #Data RIMONE
     image_count = len(list(dataDir.glob('**/*.png')))
     print("\ndata size: ",image_count)
     if image_count == 0:
@@ -77,23 +75,15 @@ def create_generator(): #perform data augmentation
   global train_generator, val_generator #make the the vaiables global so that function create model and fit_model can use these
     
   train_dataGen = ImageDataGenerator(
-    preprocessing_function = preprocess_input,
-    rotation_range = 90,
+    rotation_range = 30,
     horizontal_flip = True,
     vertical_flip = True,
-    width_shift_range = 0.2,
-    height_shift_range = 0.2,
-    zoom_range = 0.1
   )
 
   test_dataGen = ImageDataGenerator(
-    preprocessing_function = preprocess_input,
-    rotation_range = 90,
+    rotation_range = 30,
     horizontal_flip = True,
     vertical_flip = True,
-    width_shift_range = 0.2,
-    height_shift_range = 0.2,
-    zoom_range = 0.1
     )
 
   print('\nData after generator - ')

@@ -17,20 +17,24 @@ from tensorflow.keras.applications.resnet50 import preprocess_input
 Error4 = '\nError: wrong path'
 Error5 = '\nError: unable to load model, model not found cuurent working directory or given path try with new path'
 
-batch_size = 8
+batch_size = 32
 img_height = 300
 img_width = 300
+image_cnt_train = 0
+image_cnt_val = 0
 
 def load_data(): #load data for model
-  path = input('Enter path of data for training: ')
+  train_dir = input('Enter path of train images: ')
+  val_dir = input('Enter path of val images: ')
 
-  if os.path.exists(path):
-    global dataDir, image_count
-    dataDir = pathlib.Path(path)
+  if os.path.exists(neg_dir) and os.path.exists(pos_dir):
+    train_dir = pathlib.Path(train_dir)
+    val_dir = pathlib.Path(val_dir)
 
-    image_count = len(list(dataDir.glob('**/*.png')))
-    print("\ndata size: ",image_count)
-    if image_count == 0:
+    image_cnt_train = len(list(train_dir.glob('**/*')))
+    image_cnt_val = len(list(val_dir.glob('**/*')))
+    print("\ndata size: \n train Images: %d \n validation Images: %d" %(image_cnt_train, image_cnt_val))
+    if image_cnt_train == 0 or image_cnt_val == 0:
       sys.exit(Error4)
   else:
     print(Error4)
@@ -40,6 +44,8 @@ def load_data(): #load data for model
   if choose == 'y' or choose == 'yes':
     ip.resize_(path)
     ip.adaptive_hist_flattening(path)
+
+  return [train_dir, val_dir]
 
 
 #if you want to see sample images
@@ -71,9 +77,7 @@ def create_data(): #prepare data for model
       )
   print('\nClasses: ', train_ds.class_names)
 
-def create_generator(): #perform data augmentation
-  global train_generator, val_generator #make the the vaiables global so that function create model and fit_model can use these
-    
+def create_generator(neg_dir, pos_dir): #perform data augmentation    
   train_dataGen = ImageDataGenerator(
     rotation_range = 30,
     horizontal_flip = True,
@@ -87,13 +91,14 @@ def create_generator(): #perform data augmentation
     )
 
   print('\nData after generator - ')
-  train_generator = train_dataGen.flow_from_directory(dataDir,
+  train_gen = train_dataGen.flow_from_directory(neg_dir,
                                                       target_size = (img_height, img_width),
                                                       batch_size = batch_size)
 
-  val_generator = test_dataGen.flow_from_directory(dataDir,
+  val_gen = test_dataGen.flow_from_directory(dataDir,
                                                   target_size = (img_height, img_width),
                                                   batch_size = batch_size)
+  return [train_gen, val_gen]
 
 def create_model_ResNet50(): #create the model Resnet50
   print('\nCreating model ResNet50...')
@@ -162,15 +167,15 @@ def compile_model(model): #compile the model
 
   return model
 
-def fit_model(model): #fit the model on data
+def fit_model(model, train_gen, val_gen): #fit the model on data
   epochs = int(input('\nEnter epoches: '))
   validation_steps = 10
   history = model.fit(
-      train_generator,
+      train_gen,
       epochs = epochs,
-      steps_per_epoch = len(train_generator),
-      validation_data = val_generator,
-      validation_steps = image_count//batch_size,
+      steps_per_epoch = len(train_gen),
+      validation_data = val_gen,
+      validation_steps = image_cnt_val//batch_size,
       shuffle = True
     )
   

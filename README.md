@@ -49,14 +49,15 @@ Glaucoma is one of the main cause of blindness and is irreversible. Caused by el
 <br>
 <a href="https://youtu.be/hpKa6J_U2fw">Demo Video</a>
 <br><br>
+
 **Note-** this will not work in macos due to errors occuring while installing tensorflow module whenever this error resolve this might works.
 
 ---
 
 
-* While giving path as input always give directory path without file name
-* While performing image processing always give path to the single image or path of directoy where you have two folder named as "Train" and "Validation"
-* Path for data images if you wants to retrain model: https://drive.google.com/drive/folders/1Y6mw98eAQLHaEiYNme97PbW5LNb0CXxm?usp=sharing
+* While giving path as input always remember it consists only tow class one is Negative and other is Positive.
+* Perform image preprocesssing if you think it's necessary otherwise skip it.
+* Path for data images if you wants to retrain model: https://drive.google.com/drive/folders/1gL1e6TDdsdxCjJHID2WSYtt6McG2Ci-U?usp=sharing
 
 ### Accuracy plot
 <img width="488" alt="Screenshot 2022-10-05 at 2 06 09 AM" src="https://user-images.githubusercontent.com/100432854/201436678-241b3fcb-e960-4116-9930-caf96304c17d.png">
@@ -68,8 +69,8 @@ Glaucoma is one of the main cause of blindness and is irreversible. Caused by el
 
 ---
 
-* you can also do this by diretly running colab file: https://colab.research.google.com/drive/1owjTdPC7TvzdsDo2071omKNmHsSIO2oV
-* test data used in the prpgram: https://drive.google.com/drive/folders/1Y6mw98eAQLHaEiYNme97PbW5LNb0CXxm?usp=sharing
+* [you can also do this by diretly running colab file](https://colab.research.google.com/drive/1uugqIAeCxN32L4P7tOAuXZbIw3YfHM1J?usp=sharing)
+* [test data used in the prpgram](https://drive.google.com/drive/folders/1gL1e6TDdsdxCjJHID2WSYtt6McG2Ci-U?usp=sharing)
 
 <details>
 

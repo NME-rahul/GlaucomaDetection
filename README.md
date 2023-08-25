@@ -6,6 +6,7 @@ Glaucoma is one of the main cause of blindness and is irreversible. Caused by el
      alt = "image"
      align = "middle">
 
+
 ---
 
 ## required modules:
@@ -89,3 +90,8 @@ Glaucoma is one of the main cause of blindness and is irreversible. Caused by el
 
 <summary>Click to view implemetation steps in brainypi</summary>
 </details>
+
+---
+
+![030](https://github.com/NME-rahul/GlaucomaDetection/assets/100432854/24a1608b-36bb-4e60-80ed-dc76a1efb719)
+
